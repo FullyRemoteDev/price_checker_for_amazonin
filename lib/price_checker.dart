@@ -39,6 +39,25 @@ class _PriceCheckerState extends State<PriceChecker> {
   }
 
   Widget build(BuildContext context) {
+    TextField urlTextField = TextField(
+      controller: _controller,
+      keyboardType: TextInputType.url,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Paste the amazon.in link:',
+        labelStyle: TextStyle(
+          fontSize: 21.0,
+          fontWeight: FontWeight.bold,
+        ),
+        helperText: 'eg. from the browser address bar',
+        helperStyle: TextStyle(
+          fontSize: 18.0,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Price Checker For Amazon India'),
@@ -50,26 +69,7 @@ class _PriceCheckerState extends State<PriceChecker> {
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(12.0),
-              child: TextField(
-                autofocus: true,
-                controller: _controller,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Paste the amazon.in link:',
-                  labelStyle: TextStyle(
-                    fontSize: 21.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  helperText: 'eg. from the browser address bar',
-                  helperStyle: TextStyle(
-                    fontSize: 18.0,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  icon: Icon(
-                    Icons.add_shopping_cart,
-                  ),
-                ),
-              ),
+              child: urlTextField,
             ),
             RaisedButton(
               onPressed: () {},
@@ -86,7 +86,7 @@ class _PriceCheckerState extends State<PriceChecker> {
                 'Current Item Price',
                 textAlign: TextAlign.left,
               ),
-            )
+            ),
           ],
         ),
       ),
