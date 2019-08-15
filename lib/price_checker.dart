@@ -18,29 +18,22 @@ class PriceChecker extends StatefulWidget {
 }
 
 class _PriceCheckerState extends State<PriceChecker> {
-  final _controller = TextEditingController();
+  TextEditingController urlTextController = TextEditingController();
+  Scraper scraper = Scraper();
+  List<String> productDetails = new List(5);
 
   void initState() {
-    _controller.addListener(() {
-      final text = _controller.text.toLowerCase();
-      _controller.value = _controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
     super.initState();
   }
 
   void dispose() {
-    _controller.dispose();
+    urlTextController.dispose();
     super.dispose();
   }
 
   Widget build(BuildContext context) {
     TextField urlTextField = TextField(
-      controller: _controller,
+      controller: urlTextController,
       keyboardType: TextInputType.url,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
@@ -52,7 +45,7 @@ class _PriceCheckerState extends State<PriceChecker> {
         ),
         helperText: 'eg. from the browser address bar',
         helperStyle: TextStyle(
-          fontSize: 18.0,
+          fontSize: 14.0,
           fontStyle: FontStyle.italic,
         ),
       ),
@@ -60,7 +53,12 @@ class _PriceCheckerState extends State<PriceChecker> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Price Checker For Amazon India'),
+        title: Text(
+          'Price Checker For Amazon India',
+          style: TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
         backgroundColor: Colors.teal,
       ),
       body: Padding(
@@ -72,7 +70,11 @@ class _PriceCheckerState extends State<PriceChecker> {
               child: urlTextField,
             ),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () async {
+                productDetails =
+                    await scraper.urlFetcher(urlTextController.text);
+                setState(() {});
+              },
               child: Text(
                 'Check Price',
                 style: TextStyle(
@@ -80,11 +82,19 @@ class _PriceCheckerState extends State<PriceChecker> {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(12.0),
-              child: Text(
-                'Current Item Price',
-                textAlign: TextAlign.left,
+            Card(
+              child: InkWell(
+                splashColor: Colors.blue.withAlpha(30),
+                onTap: () {
+                  print('Card tapped.');
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text(
+                    '${productDetails[0]} - ₹ ${productDetails[1]}',
+                    textAlign: TextAlign.left,
+                  ),
+                ),
               ),
             ),
           ],
