@@ -8,6 +8,7 @@ class Scraper {
     http.Response response = await http.get(url);
     print(response.statusCode);
 
+    // TODO: need a try catch here
     if (response.statusCode == 200) {
       currentProduct = productParser(response.body);
       return currentProduct;
@@ -20,8 +21,17 @@ class Scraper {
 
   productParser(String responseBody) {
     dom.Document documentBody = parser.parse(responseBody);
-    String priceText =
-        documentBody.getElementById('priceblock_dealprice').innerHtml;
+    String priceText = '';
+
+    // checking what is the id of the tag displaying the product price
+    if (documentBody.getElementById('priceblock_ourprice') != null) {
+      priceText = documentBody.getElementById('priceblock_ourprice').innerHtml;
+    } else if (documentBody.getElementById('priceblock_dealprice') != null) {
+      priceText = documentBody.getElementById('priceblock_dealprice').innerHtml;
+    } else if (documentBody.getElementById('priceblock_saleprice') != null) {
+      priceText = documentBody.getElementById('priceblock_saleprice').innerHtml;
+    }
+
     String titleText = documentBody.getElementById('productTitle').innerHtml;
 
     List<String> productDetails = new List(5);
