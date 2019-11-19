@@ -44,29 +44,3 @@ class Scraper {
     return productDetails;
   }
 }
-
-// https://www.amazon.in/Test-Exclusive-611/dp/B07HGMLBW1/
-// <span id="priceblock_ourprice" class="a-size-medium a-color-price priceBlockBuyingPriceString">₹&nbsp;32,999.00</span>
-// <span id="productTitle" class="a-size-large">
-//
-//
-//
-//
-//
-//
-//
-//
-//                        OnePlus 7 (Mirror Blue, 6GB RAM, 128GB Storage)
-//
-//
-//
-//
-//
-//
-//
-//            </span>
-//<title>OnePlus 7 (Mirror Blue, 6GB RAM, 128GB Storage): Amazon.in: Electronics</title>
-
-//<link rel="canonical" href="https://www.amazon.in/Test-Exclusive-611/dp/B07HGMLBW1" />
-//<meta name="description" content="OnePlus 7 (Mirror Blue, 6GB RAM, 128GB Storage): Amazon.in: Electronics" />
-//<meta name="title" content="OnePlus 7 (Mirror Blue, 6GB RAM, 128GB Storage): Amazon.in: Electronics" />

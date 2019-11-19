@@ -50,25 +50,6 @@ class _PriceCheckerState extends State<PriceChecker> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: _productListView(),
-//        Column(
-//          children: <Widget>[
-//            Card(
-//              child: InkWell(
-//                splashColor: Colors.blue.withAlpha(30),
-//                onTap: () {
-//                  print('Card tapped.');
-//                },
-//                child: Container(
-//                  padding: EdgeInsets.all(12.0),
-//                  child: Text(
-//                    '${productDetails[0]} - ₹ ${productDetails[1]}',
-//                    textAlign: TextAlign.left,
-//                  ),
-//                ),
-//              ),
-//            ),
-//          ],
-//        ),
       ),
 
       floatingActionButton: FloatingActionButton(
@@ -135,7 +116,7 @@ class _PriceCheckerState extends State<PriceChecker> {
     );
   }
 
-  Widget _productListView() {
+  _productListView() {
     return ListView.builder(
       itemCount: productList.length,
       itemBuilder: (context, index) {
@@ -143,19 +124,11 @@ class _PriceCheckerState extends State<PriceChecker> {
         return Card(
           child: ListTile(
             title: Text(item),
-
-            onTap: () { //                                  <-- onTap
-              setState(() {
-                productList.insert(index, 'Planet');
-              });
-            },
-
-            onLongPress: () { //                            <-- onLongPress
+            onLongPress: () {
               setState(() {
                 productList.removeAt(index);
               });
             },
-
           ),
         );
       },
