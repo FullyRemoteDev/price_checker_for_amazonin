@@ -6,6 +6,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: PriceChecker(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -18,11 +19,19 @@ class PriceChecker extends StatefulWidget {
 }
 
 class _PriceCheckerState extends State<PriceChecker> {
+  // Handles the input from the product URL Text Box in the Alert Dialog
   TextEditingController urlTextController = TextEditingController();
+
+  // Scraper fetches the amazon.in product web page, parses and returns details
   Scraper scraper = Scraper();
 
-  List<String> productDetails = new List(5);
+  // List that holds the details that are returned from the scraper
+  List<String> productDetails = new List(2);
+  // productDetails[0] - product title
+  // productDetails[1] - product price
+  // to be expanded for more details
 
+  // List that contains the product items to display in ListView
   List<String> productList = [];
 
   void initState() {
@@ -34,9 +43,9 @@ class _PriceCheckerState extends State<PriceChecker> {
     super.dispose();
   }
 
+  // Main Widget
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -51,10 +60,9 @@ class _PriceCheckerState extends State<PriceChecker> {
         padding: EdgeInsets.all(16.0),
         child: _productListView(),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _productURL(context);
+          _productURL(context); // Displays the alert dialog with text field
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.teal,
@@ -62,9 +70,8 @@ class _PriceCheckerState extends State<PriceChecker> {
     );
   }
 
-
+  // Alert dialog with a text field for entering product URL
   _productURL(BuildContext context) {
-
     TextField urlTextField = TextField(
       controller: urlTextController,
       keyboardType: TextInputType.url,
@@ -81,13 +88,13 @@ class _PriceCheckerState extends State<PriceChecker> {
 
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false, // false - must select a button
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Amazon.in Product Link'),
           content: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(4.0),
+              padding: EdgeInsets.all(2.0),
               child: urlTextField,
             ),
           ),
@@ -99,14 +106,22 @@ class _PriceCheckerState extends State<PriceChecker> {
               },
             ),
             FlatButton(
-              child: Text('Add'),
+              child: Text('Add Product'),
               onPressed: () async {
+                // Sends the URL to the scraper and receives product details
                 productDetails =
-                await scraper.urlFetcher(urlTextController.text);
+                    await scraper.productScraper(urlTextController.text);
+
                 setState(() {
-                  productList.add('${productDetails[0]} - ₹ ${productDetails[1]}');
+                  // Adds the product to the list of products in the ListView
+                  productList
+                      .add('${productDetails[0]} - ₹ ${productDetails[1]}');
                 });
+
+                // Clears the product URL text field after the list is updated
                 urlTextController.clear();
+
+                // Closes the alert dialog
                 Navigator.of(context).pop();
               },
             ),
@@ -116,6 +131,7 @@ class _PriceCheckerState extends State<PriceChecker> {
     );
   }
 
+  // ListView that contains the List of added products
   _productListView() {
     return ListView.builder(
       itemCount: productList.length,
@@ -126,6 +142,7 @@ class _PriceCheckerState extends State<PriceChecker> {
             title: Text(item),
             onLongPress: () {
               setState(() {
+                // Removes a product on long press action
                 productList.removeAt(index);
               });
             },
